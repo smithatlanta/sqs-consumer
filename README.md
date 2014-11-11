@@ -1,14 +1,6 @@
 # sqs-consumer
 
-[![Build Status](https://travis-ci.org/robinjmurphy/sqs-consumer.svg)](https://travis-ci.org/robinjmurphy/sqs-consumer)
-
-Build SQS-based applications without the boilerplate. Just define a function that receives an SQS message and call a callback when the message has been processed.
-
-## Installation
-
-```
-npm install sqs-consumer
-```
+Taken from https://github.com/robinjmurphy/sqs-consumer.git and molded to my needs
 
 ## Usage
 
@@ -17,8 +9,7 @@ npm install sqs-consumer
 var Consumer = require('sqs-consumer');
 
 var app = new Consumer({
-  queueUrl: 'https://sqs.eu-west-1.amazonaws.com/account-id/queue-name',
-  region: 'eu-west-1',
+  queueName: '',
   handleMessage: function (message, done) {
     // do some work with `message`
     done();
@@ -40,13 +31,25 @@ Creates a new SQS consumer.
 
 #### Options
 
-* `queueUrl` - _String_ - The SQS queue URL
-* `region` - _String_ - The AWS region
+* `queueName` - _String_ - The SQS queue URL
 * `handleMessage` - _Function_ - A function to be called whenever a message is receieved. Receives an SQS message object as its first argument and a function to call when the message has been handled as its second argument (i.e. `handleMessage(message, done)`).
 * `waitTime` - _Number_ - An optional time in milliseconds to wait after recieving a message before requesting another one. This enables you to throttle the rate at which messages will be received. (default `100`);
-* `sqs` - _Object_ - An optional [AWS SQS](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SQS.html) object to use if you need to configure the client manually
 
 ### `consumer.start()`
+
+Expects a config.json file similar to this:
+
+{
+    "AWS_ACCESS_KEY_ID": "",
+    "AWS_SECRET_ACCESS_KEY": "",
+    "AWS_REGION": "us-east-1",
+    "QUEUE_PREFIX": "us_east_",
+    "ACCOUNT": "",
+    "WAITTIMESECONDS": 20,
+    "MAXNUMBEROFMESSAGES":1
+}
+
+or you can set environment vars or pass to node via --
 
 Start polling the queue for messages.
 
